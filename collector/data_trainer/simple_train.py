@@ -8,4 +8,4 @@ y = (X.sum(axis = 1) > 0).astype(int)
 
 model = LogisticRegression()
 model.fit(X, y)
-joblib.dump(model, "/Users/tori/dev/only_tori/tori_stock_predict/predictor/ml_models/crypto_simple_model.pkl")
+joblib.dump(model, "")
