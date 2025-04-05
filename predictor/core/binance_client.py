@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 
 import requests
 from typing import List
@@ -29,3 +30,14 @@ def getBinancePrices(
     if not isinstance(data, list):
         raise Exception(f"Invalid response from Binance: {data}")
     return [ float(candle[4]) for candle in data ]
+
+@lru_cache(maxsize = 1)
+def getBinanceSymbolPairs(asset) -> list[str] :
+    url = os.environ.get("BINANCE_SYMBOL_API_URL")
+    resp = requests.get(url)
+    data = resp.json()
+    
+    symbols = [
+        s["symbol"] for s in data["symbols"] if s["status"] == "TRADING" and s["quoteAsset"] == asset
+    ]
+    return symbols
