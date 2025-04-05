@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException
 
 from core.alpha_vantage_client import getPricesForInterval
 from core.predictor import predictTrend
+from core.cache import getCachedPrices, setCachedPrices
 
 from models.PredictStockModel import PredictStockTrendRequest
 
@@ -13,8 +14,14 @@ def predictStockTrend(
     requestData : PredictStockTrendRequest
 ) :
     try:
-        prices = getPricesForInterval(requestData.symbol)
-        print("prices", prices)
+        symbol = requestData.symbol.upper()
+        
+        cached = getCachedPrices(symbol)
+        if cached :
+            prices = cached
+        else :
+            prices = getPricesForInterval(symbol)
+            setCachedPrices(symbol, prices)
         prediction = predictTrend(prices)
         return {
             "symbol" : requestData.symbol,
