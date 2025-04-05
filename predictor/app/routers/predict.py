@@ -2,7 +2,7 @@ import traceback
 from fastapi import APIRouter, HTTPException
 
 from core.alpha_vantage_client import getPricesForInterval
-from core.binance_client import getBinancePrices
+from core.binance_client import getBinancePrices, getBinanceSymbolPairs
 from core.predictor import predictSimpleTrend
 from core.cache import getCachedPrices, setCachedPrices
 
@@ -42,6 +42,13 @@ def predictCryptoTrend(
 ):
     try :
         symbol = requestData.symbol.upper()
+        
+        valid_symbols = getBinanceSymbolPairs("USDT")
+        if symbol not in valid_symbols:
+            raise HTTPException(
+                status_code = 400,
+                detail = f"Invalid Symbol : {symbol}"
+            )
         
         cached = getCachedPrices(symbol)
         if cached:
