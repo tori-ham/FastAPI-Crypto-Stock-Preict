@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException
 
 from core.alpha_vantage_client import getPricesForInterval
 from core.binance_client import getBinancePrices, getBinanceSymbolPairs
+from core.yfinance_utils import isValidYFinanceSymbol
 from core.predictor import predictSimpleTrend
 from core.cache import getCachedPrices, setCachedPrices
 
@@ -16,6 +17,11 @@ def predictStockTrend(
 ) :
     try:
         symbol = requestData.symbol.upper()
+        if not isValidYFinanceSymbol(symbol):
+            raise HTTPException(
+                status_code = 400,
+                detail = f"Invalid Symbol : {symbol}"
+            )
         
         cached = getCachedPrices(symbol)
         if cached :
