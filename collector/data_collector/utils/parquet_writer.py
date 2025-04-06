@@ -18,6 +18,25 @@ def saveDataToParquet(
     
     file_path = f"{folder}/{symbol}.parquet"
     
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = ['_'.join(col).strip() for col in df.columns]
+    
+    rename_map = {}
+    for col in df.columns:
+        if "date" in col.lower() or "datetime" in col.lower():
+            rename_map[col] = "datetime"
+        elif "open" in col.lower():
+            rename_map[col] = "open"
+        elif "high" in col.lower():
+            rename_map[col] = "high"
+        elif "low" in col.lower():
+            rename_map[col] = "low"
+        elif "close" in col.lower():
+            rename_map[col] = "close"
+        elif "volume" in col.lower():
+            rename_map[col] = "volume"
+    df = df.rename(columns = rename_map)
+    
     if os.path.exists(file_path):
         existing_df = pd.read_parquet(file_path)
         combined_df = pd.concat( [ existing_df, df ] ).drop_duplicates(subset = ["datetime"]).sort_values("datetime")
