@@ -23,5 +23,6 @@ def saveDataToParquet(
         combined_df = pd.concat( [ existing_df, df ] ).drop_duplicates(subset = ["datetime"]).sort_values("datetime")
     else:
         combined_df = df
+    # combined_df.columns = ["datetime", "open", "high", "low", "close", "volume"]
     combined_df.to_parquet(file_path, index = False)
     print(f"{symbol} : {len(combined_df)} Rows 저장 완료")

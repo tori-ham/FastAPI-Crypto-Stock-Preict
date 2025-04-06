@@ -1,6 +1,13 @@
 .env 
+__pycache__
+__pycache__/*
+**/__pycache__
+**/__pycache__/*
 
 predict_env
 predict_env/*
 predictor/ml_models
 predictor/ml_models/*
+
+collector/db
+collector/db/*
