@@ -7,3 +7,5 @@ predictor/ml_models
 
 collector/db
 collector/data
+
+node_modules
