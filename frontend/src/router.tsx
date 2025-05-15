@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Dashboard from "./pages/dashboard/Dashboard";
-import Forecast from "./pages/forecast/Forecast";
-import Indicator from "./pages/indicator/Indicator";
-import News from "./pages/news/News";
-import Settings from "./pages/settings/Settings";
-import Layout from "./pages/Layout";
+import Dashboard from "./pages/Dashboard";
+import Forecast from "./pages/Forecast";
+import Indicator from "./pages/Indicator";
+import News from "./pages/News";
+import Settings from "./pages/Settings";
+import Layout from "./components/common/Layout";
 
 const router= createBrowserRouter(
     [
